@@ -32,6 +32,13 @@ Function Write-Ornament
     '»',
     'ø',
     'ł',
+    'Δ',
+    'π',
+    'Ψ',
+    'ζ',
+    'Ξ'
+  )
+  $coreOrn = @(
     'Ɣ',
     'Ɛ',
     'Ƣ',
@@ -49,15 +56,14 @@ Function Write-Ornament
     'ʚ',
     'ʞ',
     'ʬ',
-    'Δ',
-    'π',
-    'Ψ',
-    'ζ',
-    'Ξ',
     'ϣ',
     'Ϡ',
     'ϓ'
   )
+  if ($PSVersionTable.PSEdition -eq 'Core')
+  {
+    $ornaments += $coreOrn
+  }
 
   $colors = @(
     'Red',
