@@ -160,6 +160,30 @@ Function Write-Trunk
   }
 }
 
+<#
+.SYNOPSIS
+Happy Holidays!
+
+.DESCRIPTION
+Create a beautiful console tree in seconds by running this command.
+Add some holiday spirit to your PSSession.
+
+.PARAMETER Height
+The height / size of the tree to produce.
+It will not allow you to specify a height that would break the visual appeal of the tree.
+
+.PARAMETER MaxSize
+Produce the largest size of tree, without lines beginning to wrap, and thus breaking the appeal of the holiday tree.
+
+.EXAMPLE
+Write-SeasonsGreeting
+
+.EXAMPLE
+Write-SeasonsGreeting -MaxSize
+
+.EXAMPLE
+Write-SeasonsGreeting -Height 10
+#>
 Function Write-SeasonsGreeting 
 {
   [CmdletBinding(DefaultParameterSetName = 'Height')]
