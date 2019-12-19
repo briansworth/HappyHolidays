@@ -12,7 +12,8 @@
 $star = @'
  __/\__ 
  \    /
- /_/\_\
+ /_  _\
+   \/
 '@
 
 Function Write-Ornament
@@ -94,7 +95,7 @@ Function Write-Ornament
   Write-Host -Object $randOrn `
     -ForegroundColor $randCol `
     -BackgroundColor 'Green' `
-    -NoNewLine
+    -NoNewline
 }
 
 Function Write-HostRepeat
@@ -247,16 +248,16 @@ Function Write-SeasonsGreeting
   [int]$center = $host.UI.RawUI.WindowSize.Width / 2 - 2
 
   Write-AsciiArt -Art $star -Color DarkYellow
+  Write-Host -NoNewline -Object "`r"
 
-  #  Skip first /\, the star takes care of that
-  for ($i = 1; $i -lt $Height; $i++)
+  for ($i = 0; $i -lt $Height; $i++)
   {
     $width = $i * 2 
 
     ### Spacing before the tree
     for ($k = 1; $k -lt ($center - $i); $k++)
     {
-      Write-Host ' ' -NoNewLine
+      Write-Host ' ' -NoNewline
     }
 
     ### BEGIN fill in tree ##
