@@ -9,6 +9,12 @@
   /_____)                                                       (_____\
 '@
 
+$star = @'
+ __/\__ 
+ \    /
+ /_/\_\
+'@
+
 Function Write-Ornament
 {
   [CmdletBinding()]
@@ -125,32 +131,66 @@ Function Write-HostRepeat
   }
 }
 
+Function Resolve-AsciiArtWidth
+{
+  [CmdletBinding()]
+  Param(
+    [string]$Art
+  )
+  $longest = 0
+  foreach ($line in $Art.Split("`n"))
+  {
+    if ($line.length -gt $longest)
+    {
+      $longest = $line.length
+    }
+  }
+  return $longest
+}
+
+Function Write-AsciiArt
+{
+  [CmdletBinding()]
+  Param(
+    [string]$Art,
+
+    [ConsoleColor]$Color = 'Green'
+  )
+  $center = $host.UI.RawUI.WindowSize.Width / 2 - 2
+  $artWidth = Resolve-AsciiArtWidth -Art $Art
+  foreach ($line in $Art.Split("`n"))
+  {
+    Write-HostRepeat -Count ($center - ($artWidth / 2))
+    Write-Host "$line" -ForegroundColor $Color
+  }
+}
+
 Function Write-Trunk
 {
   [CmdletBinding()]
   Param(
     [int]$TreeHeight
   )
-  $center = $host.UI.RawUI.WindowSize.Width / 2 - 2
-  [int]$trunkh=1
-  [int]$trunkw=1
+  [int]$center = $host.UI.RawUI.WindowSize.Width / 2 - 2
+  $trunkh = 1
+  $trunkw = 2
   if ($TreeHeight -ge 0 -and $TreeHeight -lt 12){
-    $trunkh=1
-  }elseif ($TreeHeight -ge 13 -and $TreeHeight -lt 25){
-    $trunkh=2
-    $trunkw=2
-  }elseif ($TreeHeight -ge 25 -and $TreeHeight -lt 35){
-    $trunkh=3
-    $trunkw=4
-  }elseif ($TreeHeight -ge 35 -and $TreeHeight -lt 50){
-    $trunkh=4
-    $trunkw=6
-  }elseif ($TreeHeight -ge 50 -and $TreeHeight -lt 75){
-    $trunkh=5
-    $trunkw=3
+    $trunkh = 1
+  }elseif ($TreeHeight -ge 13 -and $TreeHeight -lt 20){
+    $trunkh = 2
+    $trunkw = 2
+  }elseif ($TreeHeight -ge 20 -and $TreeHeight -lt 30){
+    $trunkh = 3
+    $trunkw = 4
+  }elseif ($TreeHeight -ge 30 -and $TreeHeight -lt 40){
+    $trunkh = 4
+    $trunkw = 6
+  }elseif ($TreeHeight -ge 40 -and $TreeHeight -lt 75){
+    $trunkh = 5
+    $trunkw = 8
   }else{
-    $trunkh=6
-    $trunkw=4
+    $trunkh = 6
+    $trunkw = 10
   }
   for ($i = 0; $i -lt $trunkh; $i++)
   {
@@ -199,21 +239,17 @@ Function Write-SeasonsGreeting
   )
   if($PSCmdlet.ParameterSetName -eq 'Max')
   {
-    [int16]$Height=$host.UI.RawUI.WindowSize.Width/ 2 - 8
+    [int16]$Height=$host.UI.RawUI.WindowSize.Width / 2 - 3
   }
 
   ## percent chance to produce ornament on tree. max: 100 ##
   $ornamentFrequency = 35
-  $center = $host.UI.RawUI.WindowSize.Width / 2 - 2
+  [int]$center = $host.UI.RawUI.WindowSize.Width / 2 - 2
 
-  Write-HostRepeat -Count $center
-  Write-Host -ForegroundColor Yellow '*'
+  Write-AsciiArt -Art $star -Color DarkYellow
 
-  $params = @{
-    BackgroundColor = 'Green';
-    NoNewline       = $true;
-  }
-  for ($i = 0; $i -lt $Height; $i++)
+  #  Skip first /\, the star takes care of that
+  for ($i = 1; $i -lt $Height; $i++)
   {
     $width = $i * 2 
 
@@ -236,16 +272,9 @@ Function Write-SeasonsGreeting
   Write-HostRepeat -Count ($Height * 2) -Character '~' -ForegroundColor 'Green'
   Write-Host -Object ''
   ### END fill in tree ###
-    
+
   Write-Trunk -TreeHeight $Height
-
-
-  $bannerWidth = 71
-  foreach ($line in $holidayBanner.Split("`n"))
-  {
-    Write-HostRepeat -Count ($center - ($bannerWidth / 2))
-    Write-Host "$line" -ForegroundColor Green
-  }
+  Write-AsciiArt -Art $holidayBanner
 }
 
 Export-ModuleMember -Function Write-SeasonsGreeting
