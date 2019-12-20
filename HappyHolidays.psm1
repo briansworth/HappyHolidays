@@ -157,7 +157,7 @@ Function Write-AsciiArt
 
     [ConsoleColor]$Color = 'Green'
   )
-  $center = $host.UI.RawUI.WindowSize.Width / 2 - 2
+  [int]$center = $host.UI.RawUI.WindowSize.Width / 2 - 2
   $artWidth = Resolve-AsciiArtWidth -Art $Art
   foreach ($line in $Art.Split("`n"))
   {
